@@ -1,23 +1,45 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [todoInput, setTodoInput] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = () => {
+    if (todoInput.trim()) {
+      setTodos([...todos, todoInput]);
+      setTodoInput("");
+    }
+  };
+
+  const removeTodo = (index) => {
+    const newTodos = todos.filter((_, i) => i !== index);
+    setTodos(newTodos);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="form-group">
+        <label>Hedef</label>
+        <input
+          type="text"
+          value={todoInput}
+          onChange={(e) => setTodoInput(e.target.value)}
+          className="form-control"
+        />
+        <button onClick={addTodo} className="btn btn-primary mt-3">Ekle</button>
+      </div>
+      <ul className="mt-4">
+        {todos.map((todo, index) => (
+          <li
+            key={index}
+            onClick={() => removeTodo(index)}
+            className="todo-item"
+          >
+            {todo}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
